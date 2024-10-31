@@ -1,3 +1,4 @@
+package calculator;
 public class Core
 {
     private int num1;
