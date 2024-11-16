@@ -3,10 +3,22 @@ public class Core
 {
     private int num1;
     private int num2;
+    private String match;
     public Core(int num1,int num2)
     {
         this.num1=num1;
         this.num2=num2;
+    }
+    public Core(String selected)
+    {
+        match=selected;
+        int math=0;
+        //2+3
+        if(!selected.contains("("))//simple
+        {
+            math=Integer.valueOf(match);
+            System.out.println(math);
+        }
     }
     public Core()
     {

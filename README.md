@@ -1,4 +1,4 @@
-# project Cal
+# project Calc
 
 NO AI
 
@@ -25,6 +25,24 @@ options for UI
 
 I shall go with jafafx just cause
 
-I have completed the buttons 
+I have completed the buttons
 
 next Is to make the display,then implement Core and add a selected convertor to core it will need to change a string text into a useable int bits
+
+added plus minus multiplacation and divide
+
+next we need to create display shopuld go from 0 to 56 and 0 to max width
+create function to translate inputs into command
+Now dipsplays
+
+* need a clear , (,   ) and execute button (=)
+
+add linked list to front-end ie-> when user input first number that is one list space[num1],
+when a specail charater is detected it adds one [+] then next num [num2] so on unitl ('=') is detected
+
+3 if statements,
+
+Maybe not linkedlist ArrayList? or regArray?
+
+ok some progress made i used arraylist now it is in the format of [1234],[+],[1234]
+next will to be do thhe math
