@@ -38,7 +38,7 @@ public class Core
         int result =num1+num2;
         return result;
     }
-    public int subtratct(int num1,int num2)//Subtraction
+    public int subtract(int num1,int num2)//Subtraction
     {
         int result =num1-num2;
         return result;

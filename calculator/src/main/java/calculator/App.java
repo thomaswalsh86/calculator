@@ -1,41 +1,29 @@
 package calculator;
 
 import javafx.application.Application;
-import java.util.LinkedList;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.stage.Stage;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
-import java.io.IOException;
-
-/**
- * JavaFX App
- */
 public class App extends Application {
 
-    private String selected="";
+    private String selected = "";
 
-    public static void main(String args[]){          
-         launch(args);     
-    } 
-         
-    @Override    
-    public void start(Stage primaryStage) throws Exception { 
+    public static void main(String args[]) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
         Pane layout = new Pane();
-         
         Scene scene = new Scene(layout, 275, 340);
-        Core core = new Core();
-        LinkedList<String> nums = new LinkedList<String>();
-        String t1="";
 
-        Text t = new Text(0, 50, selected);
-        t.setFont(new Font(35));
+        convertor convert = new convertor(); // Convertor instance
+        Text displayText = new Text(0, 50, selected); // Display text
+        displayText.setFont(new Font(35));
 
         Button zero = new Button("0");
         Button one = new Button("1");
@@ -56,26 +44,35 @@ public class App extends Application {
         Button bracketR = new Button(")");
         Button delete = new Button("DEL");
 
-        zero.setOnAction(e -> updateSelected("0", t));
-        one.setOnAction(e -> updateSelected("1", t));
-        two.setOnAction(e -> updateSelected("2", t));
-        three.setOnAction(e -> updateSelected("3", t));
-        four.setOnAction(e -> updateSelected("4", t));
-        five.setOnAction(e -> updateSelected("5", t));
-        six.setOnAction(e -> updateSelected("6", t));
-        seven.setOnAction(e -> updateSelected("7", t));
-        eight.setOnAction(e -> updateSelected("8", t));
-        nine.setOnAction(e -> updateSelected("9", t));
-        multiply.setOnAction(e -> updateSelected("x", t));
-        divide.setOnAction(e -> updateSelected("/", t));
-        plus.setOnAction(e -> updateSelected("+", t));
-        minus.setOnAction(e -> updateSelected("-", t));
-        bracketL.setOnAction(e -> updateSelected("(", t));
-        bracketR.setOnAction(e -> updateSelected(")", t));
-        delete.setOnAction(e -> updateSelected("", t));//removes last selected
-        //equal.setOnAction(e -> core());//clears current display
-        
-        nums.add(t1);
+        // Update selected when buttons are pressed
+        zero.setOnAction(e -> updateSelected("0", displayText));
+        one.setOnAction(e -> updateSelected("1", displayText));
+        two.setOnAction(e -> updateSelected("2", displayText));
+        three.setOnAction(e -> updateSelected("3", displayText));
+        four.setOnAction(e -> updateSelected("4", displayText));
+        five.setOnAction(e -> updateSelected("5", displayText));
+        six.setOnAction(e -> updateSelected("6", displayText));
+        seven.setOnAction(e -> updateSelected("7", displayText));
+        eight.setOnAction(e -> updateSelected("8", displayText));
+        nine.setOnAction(e -> updateSelected("9", displayText));
+        multiply.setOnAction(e -> updateSelected("x", displayText));
+        divide.setOnAction(e -> updateSelected("/", displayText));
+        plus.setOnAction(e -> updateSelected("+", displayText));
+        minus.setOnAction(e -> updateSelected("-", displayText));
+        bracketL.setOnAction(e -> updateSelected("(", displayText));
+        bracketR.setOnAction(e -> updateSelected(")", displayText));
+        delete.setOnAction(e -> deleteLast(displayText));
+
+        equal.setOnAction(e -> {
+            try {
+                var inputsForConvertor = convert.convert(selected);
+                int result = convert.math(inputsForConvertor);
+                displayText.setText(String.valueOf(result));
+                selected = ""; // Reset after calculation
+            } catch (Exception ex) {
+                displayText.setText("Error");
+            }
+        });
 
         seven.setStyle("-fx-text-fill: black; -fx-border-width: 3px; -fx-font-size: 30px;");
         eight.setStyle("-fx-text-fill: black; -fx-border-width: 3px; -fx-font-size: 30px;");
@@ -91,7 +88,12 @@ public class App extends Application {
         divide.setStyle("-fx-text-fill: black; -fx-border-width: 3px; -fx-font-size: 30px;");
         plus.setStyle("-fx-padding: 17 17 5 17; -fx-text-fill: black; -fx-border-width: 3px; -fx-font-size: 30px;");
         minus.setStyle("-fx-text-fill: black; -fx-border-width: 3px; -fx-font-size: 30px;");
-        
+        /* 
+        equal.setStyle();
+        delete.setStyle();
+        bracketL.setStyle();
+        bracketR.setStyle();
+        */
 
 
         seven.setLayoutX(0); // X-coordinate
@@ -126,14 +128,24 @@ public class App extends Application {
         zero.setLayoutX(0);
         zero.setLayoutY(275);
 
-        layout.getChildren().addAll(zero,one,two,three,four,five,six,seven,eight,nine,multiply,minus,plus,divide,t);
+        layout.getChildren().addAll(zero, one, two, three, four, five, six, seven, eight, nine, multiply, divide, plus, minus, bracketL, bracketR, equal, delete, displayText);
+
+        // Layout positions, styles, and initialization (skipped here for brevity)
+
         primaryStage.setTitle("Calculator");
-        primaryStage.setScene(scene);   
+        primaryStage.setScene(scene);
         primaryStage.show();
-        System.out.println(selected);
     }
+
     private void updateSelected(String value, Text displayText) {
         selected += value; // Append value to selected
-        displayText.setText(selected); // Update displayed text
+        displayText.setText(selected); // Update display text
+    }
+
+    private void deleteLast(Text displayText) {
+        if (!selected.isEmpty()) {
+            selected = selected.substring(0, selected.length() - 1); // Remove last character
+            displayText.setText(selected); // Update display text
+        }
     }
 }
